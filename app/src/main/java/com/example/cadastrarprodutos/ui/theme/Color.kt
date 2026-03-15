@@ -9,3 +9,9 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+//Cores dos cards de produtos
+val PRETO = Color(0xFF000000)
+val VERMELHO = Color(0xFFB00020)
+val AMARELO = Color(0xFFFFE100)
+val VERDE = Color(0xFF008000)

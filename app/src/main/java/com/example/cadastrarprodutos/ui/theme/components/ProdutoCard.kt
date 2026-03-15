@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.cadastrarprodutos.ui.theme.utils.corDeFundo
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -25,9 +26,24 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ProdutoCard(nome: String, data: String, onClick: () -> Unit){
 
+    fun diasRestantes(): Int {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val convertData = LocalDate.parse(data, formatter)
+
+        val data1 = LocalDate.of(convertData.year, convertData.monthValue, convertData.dayOfMonth)
+        val data2 = LocalDate.now()
+
+        return (data1.toEpochDay() - data2.toEpochDay()).toInt()
+    }
+
+    val diasRestantes = diasRestantes()
+
+    val corDeFundo: Color = corDeFundo(diasRestantes)
+
+
     Column(
         modifier = Modifier
-            .border(width = 1.dp, color = Color.Red)
+            .border(width = 1.dp, color = corDeFundo)
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -52,21 +68,10 @@ fun ProdutoCard(nome: String, data: String, onClick: () -> Unit){
         Spacer(
             modifier = Modifier.height(5.dp)
         )
-        fun diasRestantes(): Int {
-            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            val convertData = LocalDate.parse(data, formatter)
-
-            val data1 = LocalDate.of(convertData.year, convertData.monthValue, convertData.dayOfMonth)
-            val data2 = LocalDate.now()
-
-            return (data1.toEpochDay() - data2.toEpochDay()).toInt()
-        }
-
-        val diasRestantes = diasRestantes()
 
 
         Text(
-            text = "$diasRestantes dias restantes",
+            text =  if(diasRestantes <= 0) "VENCIDO" else "$diasRestantes dias restantes",
             modifier = Modifier.padding(10.dp)
         )
 
