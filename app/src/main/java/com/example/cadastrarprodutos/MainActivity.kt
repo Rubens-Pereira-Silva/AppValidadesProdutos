@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -188,7 +191,10 @@ fun App( modifier: Modifier = Modifier) {
             )
         }
         // Coluna onde é mostrado os produtos cadastrados
-        Column{
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+        ){
             for((index, produto) in listaProdutos.withIndex()){
                 Produto(produto[0], produto[1], { excluirProduto(index) })
             }
