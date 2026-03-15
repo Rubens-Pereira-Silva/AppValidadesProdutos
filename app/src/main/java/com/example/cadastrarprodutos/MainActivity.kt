@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cadastrarprodutos.ui.theme.CadastrarProdutosTheme
@@ -72,11 +73,15 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun App( modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
     var nomeProduce by remember { mutableStateOf("")
-    }
+        }
     var dataProduce by remember { mutableStateOf("")
-    }
-    val listaProdutos = remember {mutableStateListOf<List<String>>()
+        }
+    val listaProdutos = remember {mutableStateListOf<List<String>>().apply {
+       addAll(PrefsHelper.carregarLista(context))
+        }
     }
 
     var openDatePicker by remember {
@@ -86,6 +91,7 @@ fun App( modifier: Modifier = Modifier) {
 
     fun excluirProduto(index: Int){
         listaProdutos.removeAt(index)
+        PrefsHelper.salvarLista(context, listaProdutos)
     }
 
     Column(
@@ -167,6 +173,9 @@ fun App( modifier: Modifier = Modifier) {
                 if(nomeProduce != "" && dataProduce != ""){
                     val sublista = listOf(nomeProduce, dataProduce)
                     listaProdutos.add(sublista)
+
+                    PrefsHelper.salvarLista(context, listaProdutos)
+
                     nomeProduce = ""
                     dataProduce = ""
                 }
