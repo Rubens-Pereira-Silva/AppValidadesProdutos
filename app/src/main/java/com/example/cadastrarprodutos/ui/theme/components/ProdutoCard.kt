@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cadastrarprodutos.ui.theme.utils.corDeFundo
@@ -35,18 +37,18 @@ fun ProdutoCard(nome: String, data: String, onClick: () -> Unit){
 
     Column(
         modifier = Modifier
+            .clip(RoundedCornerShape(16.dp))
             .background(color = corDeFundo)
-            .border(width = 1.dp, color = corDeFundo)
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            modifier = Modifier.width(300.dp),
+            modifier = Modifier.width(250.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = nome,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleLarge
             )
 
             Spacer(
@@ -54,7 +56,8 @@ fun ProdutoCard(nome: String, data: String, onClick: () -> Unit){
             )
 
             Text(
-                text = data
+                text = data,
+                style = MaterialTheme.typography.bodySmall
             )
         }
 

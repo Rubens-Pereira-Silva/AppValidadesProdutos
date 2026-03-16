@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -39,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cadastrarprodutos.ui.theme.CadastrarProdutosTheme
 import com.example.cadastrarprodutos.ui.theme.components.ColunaProdutos
+import com.example.cadastrarprodutos.ui.theme.utils.rememberWindowInfo
 import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -67,6 +69,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
 @Composable
 fun App( modifier: Modifier = Modifier) {
+    val windowInfo = rememberWindowInfo()
     val context = LocalContext.current
 
     var nomeProduce by remember { mutableStateOf("")
