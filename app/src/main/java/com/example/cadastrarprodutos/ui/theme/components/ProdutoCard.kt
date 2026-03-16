@@ -2,6 +2,7 @@ package com.example.cadastrarprodutos.ui.theme.components
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.cadastrarprodutos.ui.theme.utils.corDeFundo
+import com.example.cadastrarprodutos.ui.theme.utils.diasRestantes
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -26,23 +28,14 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ProdutoCard(nome: String, data: String, onClick: () -> Unit){
 
-    fun diasRestantes(): Int {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val convertData = LocalDate.parse(data, formatter)
-
-        val data1 = LocalDate.of(convertData.year, convertData.monthValue, convertData.dayOfMonth)
-        val data2 = LocalDate.now()
-
-        return (data1.toEpochDay() - data2.toEpochDay()).toInt()
-    }
-
-    val diasRestantes = diasRestantes()
+    val diasRestantes = diasRestantes(data)
 
     val corDeFundo: Color = corDeFundo(diasRestantes)
 
 
     Column(
         modifier = Modifier
+            .background(color = corDeFundo)
             .border(width = 1.dp, color = corDeFundo)
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
