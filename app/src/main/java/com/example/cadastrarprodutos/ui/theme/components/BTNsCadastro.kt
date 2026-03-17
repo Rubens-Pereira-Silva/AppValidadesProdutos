@@ -5,7 +5,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.cadastrarprodutos.ui.theme.utils.WindowInfo
 import com.example.cadastrarprodutos.ui.theme.utils.rememberWindowInfo
 import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
@@ -48,83 +51,167 @@ fun BTNsCadastro(onClick: (String, String) -> Unit){
 
     // Texto do topo da tela
     Text(
-        text = "Produtos",
-        modifier = Modifier,
+        text = "VALIDADES",
+        modifier = Modifier
+            .padding(20.dp),
         style = MaterialTheme.typography.titleLarge
     )
-    // inputs para cadastrar produtos
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        // input do nome do produto
-        TextField(
-            value = nomeProduce,
-            onValueChange = { newText ->
-                nomeProduce = newText
-            },
-            label = { Text("Produto") },
-            modifier = Modifier.width(windowInfo.screenWidth * 0.4f)
-        )
 
-        // input da data de validade
-        TextField(
-            dataProduce,
-            onValueChange = {},
-            modifier = Modifier.width(windowInfo.screenWidth * 0.4f),
-            label = { Text("Data") },
-            interactionSource = remember {
-                MutableInteractionSource()
-            }.also {
-                LaunchedEffect(it) {
-                    it.interactions.collectLatest { interaction ->
-                        if (interaction is PressInteraction.Release) {
-                            openDatePicker = true
+    if(windowInfo.screenWidthInfo == WindowInfo.WindowType.Compact){
+        // inputs para cadastrar produtos
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            // input do nome do produto
+            TextField(
+                value = nomeProduce,
+                onValueChange = { newText ->
+                    nomeProduce = newText
+                },
+                label = { Text("Produto") },
+                modifier = Modifier.width(windowInfo.screenWidth * 0.4f)
+            )
+
+            // input da data de validade
+            TextField(
+                dataProduce,
+                onValueChange = {},
+                modifier = Modifier.width(windowInfo.screenWidth * 0.4f),
+                label = { Text("Data") },
+                interactionSource = remember {
+                    MutableInteractionSource()
+                }.also {
+                    LaunchedEffect(it) {
+                        it.interactions.collectLatest { interaction ->
+                            if (interaction is PressInteraction.Release) {
+                                openDatePicker = true
+                            }
                         }
                     }
-                }
-            },
-            readOnly = true
+                },
+                readOnly = true
 
-        )
-    }
-
-    AnimatedVisibility(openDatePicker) {
-        DatePickerDialog(
-            onDismissRequest = {
-                openDatePicker = false
-            }, confirmButton = {
-                Button(onClick = {
-                    //fazer a conveção para o campo de data
-                    state.selectedDateMillis?.let { millis ->
-                        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                        sdf.timeZone = TimeZone.getTimeZone("UTC")
-                        dataProduce = sdf.format(Date(millis))
-                    }
-                    openDatePicker = false
-                }) {
-                    Text("Selecionar")
-                }
-            }
-
-        ) {
-            DatePicker(state)
+            )
         }
 
-    }
+        AnimatedVisibility(openDatePicker) {
+            DatePickerDialog(
+                onDismissRequest = {
+                    openDatePicker = false
+                }, confirmButton = {
+                    Button(onClick = {
+                        //fazer a conveção para o campo de data
+                        state.selectedDateMillis?.let { millis ->
+                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            sdf.timeZone = TimeZone.getTimeZone("UTC")
+                            dataProduce = sdf.format(Date(millis))
+                        }
+                        openDatePicker = false
+                    }) {
+                        Text("Selecionar")
+                    }
+                }
+
+            ) {
+                DatePicker(state)
+            }
+
+        }
 
 
-    // botão para cadastrar produtos
-    Button(
-        onClick = ({
-            onClick(nomeProduce, dataProduce)
-            nomeProduce = ""
-            dataProduce = ""
-        }),
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Text(
-            text = "Cadastrar"
-        )
+        // botão para cadastrar produtos
+        Button(
+            onClick = ({
+                onClick(nomeProduce, dataProduce)
+                nomeProduce = ""
+                dataProduce = ""
+            }),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Cadastrar"
+            )
+        }
+    }else {
+        // inputs para cadastrar produtos
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            // input do nome do produto
+            TextField(
+                value = nomeProduce,
+                onValueChange = { newText ->
+                    nomeProduce = newText
+                },
+                label = { Text("Produto") },
+                modifier = Modifier.width(windowInfo.screenWidth * 0.3f)
+            )
+
+            // input da data de validade
+            TextField(
+                dataProduce,
+                onValueChange = {},
+                modifier = Modifier.width(windowInfo.screenWidth * 0.3f),
+                label = { Text("Data") },
+                interactionSource = remember {
+                    MutableInteractionSource()
+                }.also {
+                    LaunchedEffect(it) {
+                        it.interactions.collectLatest { interaction ->
+                            if (interaction is PressInteraction.Release) {
+                                openDatePicker = true
+                            }
+                        }
+                    }
+                },
+                readOnly = true
+
+            )
+
+            // botão para cadastrar produtos
+            Button(
+                onClick = ({
+                    onClick(nomeProduce, dataProduce)
+                    nomeProduce = ""
+                    dataProduce = ""
+                }),
+                modifier = Modifier
+                    .height(60.dp)
+                    .width(200.dp)
+            ) {
+                Text(
+                    text = "Cadastrar"
+                )
+            }
+        }
+        AnimatedVisibility(openDatePicker) {
+            DatePickerDialog(
+                onDismissRequest = {
+                    openDatePicker = false
+                }, confirmButton = {
+                    Button(onClick = {
+                        //fazer a conveção para o campo de data
+                        state.selectedDateMillis?.let { millis ->
+                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            sdf.timeZone = TimeZone.getTimeZone("UTC")
+                            dataProduce = sdf.format(Date(millis))
+                        }
+                        openDatePicker = false
+                    }) {
+                        Text("Selecionar")
+                    }
+                }
+
+            ) {
+                DatePicker(state)
+            }
+
+        }
     }
+
+    Spacer(
+        modifier = Modifier.height(30.dp)
+    )
 }
