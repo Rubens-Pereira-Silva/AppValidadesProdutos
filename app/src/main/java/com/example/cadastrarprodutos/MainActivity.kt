@@ -38,7 +38,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.cadastrarprodutos.PrefsHelper.salvarLista
 import com.example.cadastrarprodutos.ui.theme.CadastrarProdutosTheme
+import com.example.cadastrarprodutos.ui.theme.components.BTNsCadastro
 import com.example.cadastrarprodutos.ui.theme.components.ColunaProdutos
 import com.example.cadastrarprodutos.ui.theme.utils.rememberWindowInfo
 import kotlinx.coroutines.flow.collectLatest
@@ -72,19 +74,19 @@ fun App( modifier: Modifier = Modifier) {
     val windowInfo = rememberWindowInfo()
     val context = LocalContext.current
 
-    var nomeProduce by remember { mutableStateOf("")
-        }
-    var dataProduce by remember { mutableStateOf("")
-        }
     val listaProdutos = remember {mutableStateListOf<List<String>>().apply {
        addAll(PrefsHelper.carregarLista(context))
         }
     }
 
-    var openDatePicker by remember {
-        mutableStateOf(false)
+    fun addProduto(nome: String, data: String){
+        if(nome != "" && data != ""){
+            val sublista = listOf(nome, data)
+            listaProdutos.add(sublista)
+            salvarLista(context, listaProdutos)
+
+        }
     }
-    val state = rememberDatePickerState()
 
     fun excluirProduto(index: Int){
         listaProdutos.removeAt(index)
@@ -95,94 +97,11 @@ fun App( modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Texto do topo da tela
-        Text(
-            text = "Produtos",
-            modifier = modifier,
-            style = MaterialTheme.typography.titleLarge
-        )
-        // inputs para cadastrar produtos
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            // input do nome do produto
-            TextField(
-                value = nomeProduce,
-                onValueChange = { newText ->
-                    nomeProduce = newText
-                },
-                label = { Text("Produto") },
-                modifier = Modifier.width(160.dp)
-            )
 
-            // input da data de validade
-            TextField(
-                dataProduce,
-                onValueChange = {},
-                modifier = Modifier.width(160.dp),
-                label = { Text("Data") },
-                interactionSource = remember {
-                    MutableInteractionSource()
-                }.also {
-                    LaunchedEffect(it) {
-                        it.interactions.collectLatest { interaction ->
-                            if (interaction is PressInteraction.Release) {
-                                openDatePicker = true
-                            }
-                        }
-                    }
-                },
-                readOnly = true
+        BTNsCadastro({
+            nome, data -> addProduto(nome, data)
+        })
 
-            )
-        }
-
-        AnimatedVisibility(openDatePicker) {
-            DatePickerDialog(
-                onDismissRequest = {
-                    openDatePicker = false
-                }, confirmButton = {
-                    Button(onClick = {
-                        //fazer a conveção para o campo de data
-                        state.selectedDateMillis?.let { millis ->
-                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                            sdf.timeZone = TimeZone.getTimeZone("UTC")
-                            dataProduce = sdf.format(Date(millis))
-                        }
-                        openDatePicker = false
-                    }) {
-                        Text("Selecionar")
-                    }
-                }
-
-            ) {
-                DatePicker(state)
-            }
-
-        }
-
-
-        // botão para cadastrar produtos
-        Button(
-            onClick = ({
-                if (nomeProduce != "" && dataProduce != "") {
-                    val sublista = listOf(nomeProduce, dataProduce)
-                    listaProdutos.add(sublista)
-
-                    PrefsHelper.salvarLista(context, listaProdutos)
-
-                    nomeProduce = ""
-                    dataProduce = ""
-                }
-
-            }),
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = "Cadastrar"
-            )
-        }
         ColunaProdutos(listaProdutos) {
             idx -> excluirProduto(idx)
         }

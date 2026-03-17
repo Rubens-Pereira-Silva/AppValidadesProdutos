@@ -36,7 +36,7 @@ fun ColunaProdutos(listaProdutos: MutableList<List<String>> , onClick: (Int) -> 
             }
         }
 
-    }else{
+    }else if(windowInfo.screenWidthInfo == WindowInfo.WindowType.Medium){
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState()),
@@ -58,6 +58,55 @@ fun ColunaProdutos(listaProdutos: MutableList<List<String>> , onClick: (Int) -> 
                         ProdutoCard(listaProdutos[i+1][0],
                             listaProdutos[i+1][1],
                             { onClick(i+1) }
+                        )
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+            }
+        }
+    }else{
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            for(i in 0 until listaProdutos.size step 4){
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    ProdutoCard(listaProdutos[i][0],
+                        listaProdutos[i][1],
+                        { onClick(i) }
+                    )
+                    if(i+1 < listaProdutos.size){
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        ProdutoCard(listaProdutos[i+1][0],
+                            listaProdutos[i+1][1],
+                            { onClick(i+1) }
+                        )
+                    }
+
+                    if(i+2 < listaProdutos.size){
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        ProdutoCard(listaProdutos[i+2][0],
+                            listaProdutos[i+2][1],
+                            { onClick(i+2) }
+                        )
+                    }
+
+                    if(i+3 < listaProdutos.size){
+                        Spacer(modifier = Modifier.width(20.dp))
+
+                        ProdutoCard(listaProdutos[i+3][0],
+                            listaProdutos[i+3][1],
+                            { onClick(i+3) }
                         )
                     }
 
