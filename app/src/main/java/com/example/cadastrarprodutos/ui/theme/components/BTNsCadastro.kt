@@ -118,6 +118,8 @@ fun BTNsCadastro(onClick: (String, String) -> Unit){
     Button(
         onClick = ({
             onClick(nomeProduce, dataProduce)
+            nomeProduce = ""
+            dataProduce = ""
         }),
         modifier = Modifier.padding(16.dp)
     ) {
