@@ -74,7 +74,18 @@ Este projeto foi desenvolvido com foco em:
 
 ## 📸 Preview
 
-*(Adicione prints do app aqui para deixar o repositório mais atrativo)*
+
+<p align="center">
+  <img src="images/foto1.png" width="200"/>
+</p>
+
+<p align="center">
+  <img src="images/foto2.png" width="200"/>
+</p>
+
+<p align="center">
+ <img src="images/foto3.png" width="200"/>
+</p>
 
 ---
 
